@@ -20,3 +20,81 @@ let allWagesFor = function () {
 
     return payable
 }
+
+
+// let createEmployeeRecord = function(employee) {
+//     return {
+//         firstName: `${employee[0]}`,
+//         familyName: `${employee[1]}`,
+//         title: `${employee[2]}`,
+//         payPerHour: employee[3],
+//         timeInEvents: [],
+//         timeOutEvents: []
+//     }
+// }
+function createEmployeeRecord(employee) {
+    return {
+        firstName: `${employee[0]}`,
+        familyName: `${employee[1]}`,
+        title: `${employee[2]}`,
+        payPerHour: employee[3],
+        timeInEvents: [],
+        timeOutEvents: []
+    }
+}
+
+function createEmployeeRecords(employeeArray) {
+    return employeeArray.map(createEmployeeRecord)
+}
+
+let createTimeInEvent = function(dateTime) {
+    this.timeInEvents.push({
+        type: "TimeIn",
+        hour: parseInt(dateTime.split(" ")[1]),
+        date: dateTime.split(" ")[0]
+    })
+    return this
+}
+
+let createTimeOutEvent = function(dateTime) {
+    this.timeOutEvents.push({
+        type: "TimeOut",
+        hour: parseInt(dateTime.split(" ")[1]),
+        date: dateTime.split(" ")[0]
+    })
+    return this
+}
+
+let hoursWorkedOnDate = function(date) {
+    const timeIn = this.timeInEvents.find(event => event.date === date)
+    const timeOut = this.timeOutEvents.find(event => event.date === date)
+    return (timeOut.hour-timeIn.hour)/100
+}
+
+let wagesEarnedOnDate = function(date) {
+    return hoursWorkedOnDate.call(this, date)*this.payPerHour
+}
+
+let payrollExpense = function() {
+
+}
+
+let findEmployeeByFirstName = function(empArr, nameString) {
+    const employee = empArr.find(employee => employee.firstName === nameString)
+    return employee
+}
+
+// let calculatePayroll = function(employeeArray) {
+//     return employeeArray.map(employee => allWagesFor.call(employee)).reduce((total, wage) => total = wage + total, 0)
+// }
+
+function calculatePayroll(employeeArray) {
+    const wageArray = employeeArray.map(employee => allWagesFor.call(employee))
+    return wageArray.reduce(function(total, wage) {
+        return total = total + wage
+        }, 0)
+}
+
+
+
+let loki = createEmployeeRecord(["Loki", "Laufeysson-Odinsson", "HR Representative", 35])
